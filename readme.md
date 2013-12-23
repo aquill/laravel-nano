@@ -8,12 +8,6 @@ Laravel nano Change Log
 
 ### 12-23, 2013
 
-- Move `public/index.php` to `index.php`.
-- Updated `paths.php`.
-- Rename `application` to `app`.
-- Rename `config/application.php` to `config/app.php`.
-- Move `storage` to `app/storage`.
-- Replace `Config::get(application.*)` to `Config::get(app.*)`.
 - Added eloquent model classes `Laravel\Database\Eloquent`.
 - Updated `Auth` class `Laravel\Auth`.
 - Added auth drivers classes `Laravel\Auth\Drivers`.
