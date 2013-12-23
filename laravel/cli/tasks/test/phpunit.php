@@ -23,21 +23,20 @@ require 'paths.php';
 // --------------------------------------------------------------
 $config = file_get_contents('phpunit.xml');
 
-if (strpos($config, 'laravel-tests') !== false)
-{
-	$path = path('bundle').'laravel-tests'.DS;
+if (strpos($config, 'laravel-tests') !== false) {
+    $path = path('bundle') . 'laravel-tests' . DS;
 
-	set_path('app', $path.'application'.DS);
+    set_path('app', $path . 'application' . DS);
 
-	set_path('bundle', $path.'bundles'.DS);
+    set_path('bundle', $path . 'bundles' . DS);
 
-	set_path('storage', $path.'storage'.DS);
+    set_path('storage', $path . 'storage' . DS);
 }
 
 // --------------------------------------------------------------
 // Bootstrap the Laravel core.
 // --------------------------------------------------------------
-require path('sys').'core.php';
+require path('sys') . 'core.php';
 
 // --------------------------------------------------------------
 // Start the default bundle.

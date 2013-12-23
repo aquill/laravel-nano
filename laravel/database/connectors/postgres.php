@@ -1,38 +1,39 @@
-<?php namespace Laravel\Database\Connectors; use PDO;
+<?php namespace Laravel\Database\Connectors;
 
-class Postgres extends Connector {
+use PDO;
 
-	/**
-	 * Establish a PDO database connection.
-	 *
-	 * @param  array  $config
-	 * @return PDO
-	 */
-	public function connect($config)
-	{
-		extract($config);
+class Postgres extends Connector
+{
 
-		$dsn = "pgsql:host={$host};dbname={$database}";
+    /**
+     * Establish a PDO database connection.
+     *
+     * @param  array $config
+     * @return PDO
+     */
+    public function connect($config)
+    {
+        extract($config);
 
-		// The developer has the freedom of specifying a port for the PostgresSQL
-		// database or the default port (5432) will be used by PDO to create the
-		// connection to the database for the developer.
-		if (isset($config['port']))
-		{
-			$dsn .= ";port={$config['port']}";
-		}
+        $dsn = "pgsql:host={$host};dbname={$database}";
 
-		$connection = new PDO($dsn, $username, $password, $this->options($config));
+        // The developer has the freedom of specifying a port for the PostgresSQL
+        // database or the default port (5432) will be used by PDO to create the
+        // connection to the database for the developer.
+        if (isset($config['port'])) {
+            $dsn .= ";port={$config['port']}";
+        }
 
-		// If a character set has been specified, we'll execute a query against
-		// the database to set the correct character set. By default, this is
-		// set to UTF-8 which should be fine for most scenarios.
-		if (isset($config['charset']))
-		{
-			$connection->prepare("SET NAMES '{$config['charset']}'")->execute();
-		}
+        $connection = new PDO($dsn, $username, $password, $this->options($config));
 
-		return $connection;
-	}
+        // If a character set has been specified, we'll execute a query against
+        // the database to set the correct character set. By default, this is
+        // set to UTF-8 which should be fine for most scenarios.
+        if (isset($config['charset'])) {
+            $connection->prepare("SET NAMES '{$config['charset']}'")->execute();
+        }
+
+        return $connection;
+    }
 
 }

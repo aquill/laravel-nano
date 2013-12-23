@@ -1,4 +1,6 @@
-<?php namespace Laravel\CLI; use Laravel\IoC;
+<?php namespace Laravel\CLI;
+
+use Laravel\IoC;
 
 /**
  * The migrate task is responsible for running database migrations
@@ -6,13 +8,12 @@
  * of the migration resolver and database classes, which are used
  * to perform various support functions for the migrator.
  */
-IoC::register('task: migrate', function()
-{
-	$database = new Tasks\Migrate\Database;
+IoC::register('task: migrate', function () {
+    $database = new Tasks\Migrate\Database;
 
-	$resolver = new Tasks\Migrate\Resolver($database);
+    $resolver = new Tasks\Migrate\Resolver($database);
 
-	return new Tasks\Migrate\Migrator($resolver, $database);
+    return new Tasks\Migrate\Migrator($resolver, $database);
 });
 
 /**
@@ -20,11 +21,10 @@ IoC::register('task: migrate', function()
  * and their dependencies. It utilizes the bundles API to get the
  * meta-data for the available bundles.
  */
-IoC::register('task: bundle', function()
-{
-	$repository = IoC::resolve('bundle.repository');
+IoC::register('task: bundle', function () {
+    $repository = IoC::resolve('bundle.repository');
 
-	return new Tasks\Bundle\Bundler($repository);
+    return new Tasks\Bundle\Bundler($repository);
 });
 
 /**
@@ -32,9 +32,8 @@ IoC::register('task: bundle', function()
  * key for use by the application when encrypting strings or
  * setting the hash values on cookie signatures.
  */
-IoC::singleton('task: key', function()
-{
-	return new Tasks\Key;
+IoC::singleton('task: key', function () {
+    return new Tasks\Key;
 });
 
 /**
@@ -43,9 +42,8 @@ IoC::singleton('task: key', function()
  * such as generating the session table or clearing expired
  * sessions from storage.
  */
-IoC::singleton('task: session', function()
-{
-	return new Tasks\Session\Manager;
+IoC::singleton('task: session', function () {
+    return new Tasks\Session\Manager;
 });
 
 /**
@@ -53,9 +51,8 @@ IoC::singleton('task: session', function()
  * application and dumping the result. This allows for simple
  * testing of APIs and JSON based applications.
  */
-IoC::singleton('task: route', function()
-{
-	return new Tasks\Route;
+IoC::singleton('task: route', function () {
+    return new Tasks\Route;
 });
 
 /**
@@ -63,9 +60,8 @@ IoC::singleton('task: route', function()
  * the application, bundles, and the core framework itself.
  * It provides a nice wrapper around PHPUnit.
  */
-IoC::singleton('task: test', function()
-{
-	return new Tasks\Test\Runner;
+IoC::singleton('task: test', function () {
+    return new Tasks\Test\Runner;
 });
 
 /**
@@ -73,9 +69,8 @@ IoC::singleton('task: test', function()
  * the Laravel bundle sources to get information regarding any
  * bundles that are requested for installation.
  */
-IoC::singleton('bundle.repository', function()
-{
-	return new Tasks\Bundle\Repository;
+IoC::singleton('bundle.repository', function () {
+    return new Tasks\Bundle\Repository;
 });
 
 /**
@@ -83,9 +78,8 @@ IoC::singleton('bundle.repository', function()
  * assets to their correct directories within the install,
  * such as the web accessible directory.
  */
-IoC::singleton('bundle.publisher', function()
-{
-	return new Tasks\Bundle\Publisher;
+IoC::singleton('bundle.publisher', function () {
+    return new Tasks\Bundle\Publisher;
 });
 
 /**
@@ -94,7 +88,6 @@ IoC::singleton('bundle.publisher', function()
  * and will update the submodule so that the bundle is
  * installed into the bundle directory.
  */
-IoC::singleton('bundle.provider: github', function()
-{
-	return new Tasks\Bundle\Providers\Github;
+IoC::singleton('bundle.provider: github', function () {
+    return new Tasks\Bundle\Providers\Github;
 });

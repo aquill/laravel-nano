@@ -1,31 +1,33 @@
-<?php namespace Laravel\Database\Connectors; use PDO;
+<?php namespace Laravel\Database\Connectors;
 
-class SQLite extends Connector {
+use PDO;
 
-	/**
-	 * Establish a PDO database connection.
-	 *
-	 * @param  array  $config
-	 * @return PDO
-	 */
-	public function connect($config)
-	{
-		$options = $this->options($config);
+class SQLite extends Connector
+{
 
-		// SQLite provides supported for "in-memory" databases, which exist only for the
-		// lifetime of the request. Any given in-memory database may only have one PDO
-		// connection open to it at a time. These are usually for testing.
-		if ($config['database'] == ':memory:')
-		{
-			return new PDO('sqlite::memory:', null, null, $options);
-		}
+    /**
+     * Establish a PDO database connection.
+     *
+     * @param  array $config
+     * @return PDO
+     */
+    public function connect($config)
+    {
+        $options = $this->options($config);
 
-		// SQLite databases will be created automatically if they do not exist, so we
-		// will not check for the existence of the database file before establishing
-		// the PDO connection to the database.
-		$path = path('storage').'database'.DS.$config['database'].'.sqlite';
+        // SQLite provides supported for "in-memory" databases, which exist only for the
+        // lifetime of the request. Any given in-memory database may only have one PDO
+        // connection open to it at a time. These are usually for testing.
+        if ($config['database'] == ':memory:') {
+            return new PDO('sqlite::memory:', null, null, $options);
+        }
 
-		return new PDO('sqlite:'.$path, null, null, $options);
-	}
+        // SQLite databases will be created automatically if they do not exist, so we
+        // will not check for the existence of the database file before establishing
+        // the PDO connection to the database.
+        $path = path('storage') . 'database' . DS . $config['database'] . '.sqlite';
+
+        return new PDO('sqlite:' . $path, null, null, $options);
+    }
 
 }

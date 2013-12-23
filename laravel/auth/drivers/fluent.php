@@ -4,20 +4,20 @@ use Laravel\Hash;
 use Laravel\Config;
 use Laravel\Database as DB;
 
-class Fluent extends Driver {
+class Fluent extends Driver
+{
 
     /**
      * Get the current user of the application.
      *
      * If the user is a guest, null should be returned.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return mixed|null
      */
     public function retrieve($id)
     {
-        if (filter_var($id, FILTER_VALIDATE_INT) !== false)
-        {
+        if (filter_var($id, FILTER_VALIDATE_INT) !== false) {
             return DB::table(Config::get('auth.table'))->find($id);
         }
     }
@@ -38,8 +38,7 @@ class Fluent extends Driver {
 
         $password_field = Config::get('auth.password', 'password');
 
-        if ( ! is_null($user) and Hash::check($password, $user->{$password_field}))
-        {
+        if (!is_null($user) and Hash::check($password, $user->{$password_field})) {
             return $this->login($user->id, array_get($arguments, 'remember'));
         }
 
@@ -49,21 +48,19 @@ class Fluent extends Driver {
     /**
      * Get the user from the database table.
      *
-     * @param  array  $arguments
+     * @param  array $arguments
      * @return mixed
      */
     protected function get_user($arguments)
     {
         $table = Config::get('auth.table');
 
-        return DB::table($table)->where(function($query) use($arguments)
-        {
+        return DB::table($table)->where(function ($query) use ($arguments) {
             $username = Config::get('auth.username');
-            
+
             $query->where($username, '=', $arguments['username']);
 
-            foreach(array_except($arguments, array('username', 'password', 'remember')) as $column => $val)
-            {
+            foreach (array_except($arguments, array('username', 'password', 'remember')) as $column => $val) {
                 $query->where($column, '=', $val);
             }
         })->first();

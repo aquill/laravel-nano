@@ -1,6 +1,9 @@
-<?php namespace Laravel; use Closure;
+<?php namespace Laravel;
 
-class Auth {
+use Closure;
+
+class Auth
+{
 
     /**
      * The currently active authentication drivers.
@@ -19,15 +22,14 @@ class Auth {
     /**
      * Get an authentication driver instance.
      *
-     * @param  string  $driver
+     * @param  string $driver
      * @return Driver
      */
     public static function driver($driver = null)
     {
         if (is_null($driver)) $driver = Config::get('auth.driver');
 
-        if ( ! isset(static::$drivers[$driver]))
-        {
+        if (!isset(static::$drivers[$driver])) {
             static::$drivers[$driver] = static::factory($driver);
         }
 
@@ -37,20 +39,19 @@ class Auth {
     /**
      * Create a new authentication driver instance.
      *
-     * @param  string  $driver
+     * @param  string $driver
+     * @throws \Exception
      * @return Driver
      */
     protected static function factory($driver)
     {
-        if (isset(static::$registrar[$driver]))
-        {
+        if (isset(static::$registrar[$driver])) {
             $resolver = static::$registrar[$driver];
 
             return $resolver();
         }
 
-        switch ($driver)
-        {
+        switch ($driver) {
             case 'fluent':
                 return new Auth\Drivers\Fluent(Config::get('auth.table'));
 
@@ -65,8 +66,8 @@ class Auth {
     /**
      * Register a third-party authentication driver.
      *
-     * @param  string   $driver
-     * @param  Closure  $resolver
+     * @param  string  $driver
+     * @param  Closure $resolver
      * @return void
      */
     public static function extend($driver, Closure $resolver)

@@ -1,4 +1,5 @@
-<?php namespace Laravel\CLI; defined('DS') or die('No direct script access.');
+<?php namespace Laravel\CLI;
+defined('DS') or die('No direct script access.');
 
 use Laravel\Bundle;
 use Laravel\Config;
@@ -15,9 +16,8 @@ Bundle::start(DEFAULT_BUNDLE);
  * for the "database" CLI option. This allows migrations to be run
  * conveniently for a test or staging database.
  */
-if (isset($_SERVER['CLI']['DB']))
-{
-	Config::set('database.default', $_SERVER['CLI']['DB']);
+if (isset($_SERVER['CLI']['DB'])) {
+    Config::set('database.default', $_SERVER['CLI']['DB']);
 }
 
 /**
@@ -26,7 +26,7 @@ if (isset($_SERVER['CLI']['DB']))
  * us to seamlessly add tasks to the CLI so that the Task class
  * doesn't have to worry about how to resolve core tasks.
  */
-require path('sys').'cli/dependencies'.EXT;
+require path('sys') . 'cli/dependencies' . EXT;
 
 /**
  * We will wrap the command execution in a try / catch block and
@@ -35,13 +35,10 @@ require path('sys').'cli/dependencies'.EXT;
  * for the CLI exceptions. All others will be not be caught
  * and will be totally dumped out to the CLI.
  */
-try
-{
-	Command::run(array_slice($arguments, 1));
-}
-catch (\Exception $e)
-{
-	echo $e->getMessage();
+try {
+    Command::run(array_slice($arguments, 1));
+} catch (\Exception $e) {
+    echo $e->getMessage();
 }
 
 echo PHP_EOL;

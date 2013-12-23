@@ -10,18 +10,18 @@ define('EXT', '.php');
 define('CRLF', "\r\n");
 define('BLADE_EXT', '.blade.php');
 define('DEFAULT_BUNDLE', 'app');
-define('MB_STRING', (int) function_exists('mb_get_info'));
+define('MB_STRING', (int)function_exists('mb_get_info'));
 
 /**
  * Require all of the classes that can't be loaded by the auto-loader.
  * These are typically classes that the auto-loader relies upon to
  * load classes, such as the array and configuration classes.
  */
-require path('sys').'event'.EXT;
-require path('sys').'bundle'.EXT;
-require path('sys').'config'.EXT;
-require path('sys').'helpers'.EXT;
-require path('sys').'autoloader'.EXT;
+require path('sys') . 'event' . EXT;
+require path('sys') . 'bundle' . EXT;
+require path('sys') . 'config' . EXT;
+require path('sys') . 'helpers' . EXT;
+require path('sys') . 'autoloader' . EXT;
 
 /**
  * Register the Autoloader's "load" method on the auto-loader stack.
@@ -42,15 +42,14 @@ Autoloader::namespaces(array('Laravel' => path('sys')));
  * retrieve them from the various parts of the CLI code. We can use
  * the Request class to access them conveniently.
  */
-if (defined('STDIN'))
-{
-	$console = CLI\Command::options($_SERVER['argv']);
+if (defined('STDIN')) {
+    $console = CLI\Command::options($_SERVER['argv']);
 
-	list($arguments, $options) = $console;
+    list($arguments, $options) = $console;
 
-	$options = array_change_key_case($options, CASE_UPPER);
+    $options = array_change_key_case($options, CASE_UPPER);
 
-	$_SERVER['CLI'] = $options;
+    $_SERVER['CLI'] = $options;
 }
 
 /**
@@ -59,9 +58,8 @@ if (defined('STDIN'))
  * files from the CLI since the environment is usually controlled
  * by server environmenet variables.
  */
-if (isset($_SERVER['CLI']['ENV']))
-{
-	$_SERVER['LARAVEL_ENV'] = $_SERVER['CLI']['ENV'];
+if (isset($_SERVER['CLI']['ENV'])) {
+    $_SERVER['LARAVEL_ENV'] = $_SERVER['CLI']['ENV'];
 }
 
 /**
@@ -86,9 +84,8 @@ date_default_timezone_set($timezone);
  * with the bundle class. All of the bundles are stored in
  * an array within the application directory.
  */
-$bundles = require path('app').'bundles'.EXT;
+$bundles = require path('app') . 'bundles' . EXT;
 
-foreach ($bundles as $bundle => $config)
-{
-	Bundle::register($bundle, $config);
+foreach ($bundles as $bundle => $config) {
+    Bundle::register($bundle, $config);
 }

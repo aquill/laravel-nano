@@ -7,7 +7,8 @@ use Laravel\Event;
 use Laravel\Session;
 use Laravel\Crypter;
 
-abstract class Driver {
+abstract class Driver
+{
 
     /**
      * The user currently being managed by the driver.
@@ -30,16 +31,14 @@ abstract class Driver {
      */
     public function __construct()
     {
-        if (Session::started())
-        {
+        if (Session::started()) {
             $this->token = Session::get($this->token());
         }
 
         // If a token did not exist in the session for the user, we will attempt
         // to load the value of a "remember me" cookie for the driver, which
         // serves as a long-lived client side authenticator for the user.
-        if (is_null($this->token))
-        {
+        if (is_null($this->token)) {
             $this->token = $this->recall();
         }
     }
@@ -53,7 +52,7 @@ abstract class Driver {
      */
     public function guest()
     {
-        return ! $this->check();
+        return !$this->check();
     }
 
     /**
@@ -63,7 +62,7 @@ abstract class Driver {
      */
     public function check()
     {
-        return ! is_null($this->user());
+        return !is_null($this->user());
     }
 
     /**
@@ -75,7 +74,7 @@ abstract class Driver {
      */
     public function user()
     {
-        if ( ! is_null($this->user)) return $this->user;
+        if (!is_null($this->user)) return $this->user;
 
         return $this->user = $this->retrieve($this->token);
     }
@@ -83,7 +82,7 @@ abstract class Driver {
     /**
      * Get the given application user by ID.
      *
-     * @param  int    $id
+     * @param  int $id
      * @return mixed
      */
     abstract public function retrieve($id);
@@ -91,7 +90,7 @@ abstract class Driver {
     /**
      * Attempt to log a user into the application.
      *
-     * @param  array  $arguments
+     * @param  array $arguments
      * @return void
      */
     abstract public function attempt($arguments = array());
@@ -101,8 +100,8 @@ abstract class Driver {
      *
      * The token is typically a numeric ID for the user.
      *
-     * @param  string  $token
-     * @param  bool    $remember
+     * @param  string $token
+     * @param  bool   $remember
      * @return bool
      */
     public function login($token, $remember = false)
@@ -139,7 +138,7 @@ abstract class Driver {
     /**
      * Store a user's token in the session.
      *
-     * @param  string  $token
+     * @param  string $token
      * @return void
      */
     protected function store($token)
@@ -150,12 +149,12 @@ abstract class Driver {
     /**
      * Store a user's token in a long-lived cookie.
      *
-     * @param  string  $token
+     * @param  string $token
      * @return void
      */
     protected function remember($token)
     {
-        $token = Crypter::encrypt($token.'|'.Str::random(40));
+        $token = Crypter::encrypt($token . '|' . Str::random(40));
 
         $this->cookie($this->recaller(), $token, Cookie::forever);
     }
@@ -172,8 +171,7 @@ abstract class Driver {
         // By default, "remember me" cookies are encrypted and contain the user
         // token as well as a random string. If it exists, we'll decrypt it
         // and return the first segment, which is the user's ID token.
-        if ( ! is_null($cookie))
-        {
+        if (!is_null($cookie)) {
             return head(explode('|', Crypter::decrypt($cookie)));
         }
     }
@@ -181,9 +179,9 @@ abstract class Driver {
     /**
      * Store an authentication cookie.
      *
-     * @param  string  $name
-     * @param  string  $value
-     * @param  int     $minutes
+     * @param  string $name
+     * @param  string $value
+     * @param  int    $minutes
      * @return void
      */
     protected function cookie($name, $value, $minutes)
@@ -205,7 +203,7 @@ abstract class Driver {
      */
     protected function token()
     {
-        return $this->name().'_login';
+        return $this->name() . '_login';
     }
 
     /**
@@ -215,7 +213,7 @@ abstract class Driver {
      */
     protected function recaller()
     {
-        return $this->name().'_remember';
+        return $this->name() . '_remember';
     }
 
     /**

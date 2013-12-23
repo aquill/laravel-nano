@@ -12,9 +12,8 @@ require 'core.php';
  * on every error that cannot be handled. All of those exceptions will
  * be sent through this closure for processing.
  */
-set_exception_handler(function($e)
-{
-	Error::exception($e);
+set_exception_handler(function ($e) {
+    Error::exception($e);
 });
 
 /**
@@ -22,9 +21,8 @@ set_exception_handler(function($e)
  * handler which will convert the error into an ErrorException object
  * and pass the exception into the exception handler.
  */
-set_error_handler(function($code, $error, $file, $line)
-{
-	Error::native($code, $error, $file, $line);
+set_error_handler(function ($code, $error, $file, $line) {
+    Error::native($code, $error, $file, $line);
 });
 
 /**
@@ -33,9 +31,8 @@ set_error_handler(function($code, $error, $file, $line)
  * occured, we will convert it to an ErrorException and pass it
  * to the common exception handler for the framework.
  */
-register_shutdown_function(function()
-{
-	Error::shutdown();
+register_shutdown_function(function () {
+    Error::shutdown();
 });
 
 /**
@@ -60,11 +57,10 @@ ini_set('display_errors', Config::get('error.display'));
  */
 $auto_key = Config::get('app.auto_key');
 
-if ($auto_key and Config::get('app.key') == '')
-{
-	ob_start() and with(new CLI\Tasks\Key)->generate();
+if ($auto_key and Config::get('app.key') == '') {
+    ob_start() and with(new CLI\Tasks\Key)->generate();
 
-	ob_end_clean();
+    ob_end_clean();
 }
 
 /**
@@ -73,14 +69,12 @@ if ($auto_key and Config::get('app.key') == '')
  * strip slashes on all input arrays if magic quotes are turned
  * on for the server environment.
  */
-if (magic_quotes())
-{
-	$magics = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
+if (magic_quotes()) {
+    $magics = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
 
-	foreach ($magics as &$magic)
-	{
-		$magic = array_strip_slashes($magic);
-	}
+    foreach ($magics as &$magic) {
+        $magic = array_strip_slashes($magic);
+    }
 }
 
 /**
@@ -88,11 +82,10 @@ if (magic_quotes())
  * be set on a static property of the Session class for easy
  * access throughout the framework and application.
  */
-if (Config::get('session.driver') !== '')
-{
-	Session::start(Config::get('session.driver'));
+if (Config::get('session.driver') !== '') {
+    Session::start(Config::get('session.driver'));
 
-	Session::load(Cookie::get(Config::get('session.cookie')));
+    Session::load(Cookie::get(Config::get('session.cookie')));
 }
 
 /**
@@ -103,28 +96,24 @@ if (Config::get('session.driver') !== '')
  */
 $input = array();
 
-switch (Request::method())
-{
-	case 'GET':
-		$input = $_GET;
-		break;
+switch (Request::method()) {
+    case 'GET':
+        $input = $_GET;
+        break;
 
-	case 'POST':
-		$input = $_POST;
-		break;
+    case 'POST':
+        $input = $_POST;
+        break;
 
-	case 'PUT':
-	case 'DELETE':
-		if (Request::spoofed())
-		{
-			$input = $_POST;
-		}
-		else
-		{
-			parse_str(file_get_contents('php://input'), $input);
+    case 'PUT':
+    case 'DELETE':
+        if (Request::spoofed()) {
+            $input = $_POST;
+        } else {
+            parse_str(file_get_contents('php://input'), $input);
 
-			if (magic_quotes()) $input = array_strip_slashes($input);
-		}
+            if (magic_quotes()) $input = array_strip_slashes($input);
+        }
 }
 
 /**
@@ -149,9 +138,8 @@ Bundle::start(DEFAULT_BUNDLE);
  * This is especially useful for debug bundles or bundles that
  * are used throughout the application.
  */
-foreach (Bundle::$bundles as $bundle => $config)
-{
-	if ($config['auto']) Bundle::start($bundle);
+foreach (Bundle::$bundles as $bundle => $config) {
+    if ($config['auto']) Bundle::start($bundle);
 }
 
 /**
@@ -159,9 +147,8 @@ foreach (Bundle::$bundles as $bundle => $config)
  * routes that can not be matched to any other route within the
  * application. We'll just raise the 404 event.
  */
-Routing\Router::register('*', '(:all)', function()
-{
-	return Event::first('404');
+Routing\Router::register('*', '(:all)', function () {
+    return Event::first('404');
 });
 
 /**
@@ -172,9 +159,8 @@ Routing\Router::register('*', '(:all)', function()
  */
 $uri = URI::current();
 
-if (count(URI::$segments) > 15)
-{
-	throw new \Exception("Invalid request. Too many URI segments.");
+if (count(URI::$segments) > 15) {
+    throw new \Exception("Invalid request. Too many URI segments.");
 }
 
 /**
@@ -193,9 +179,8 @@ $response = Request::$route->call();
  * driver is a sweeper, session garbage collection might be
  * performed depending on the "sweepage" probability.
  */
-if (Config::get('session.driver') !== '')
-{
-	Session::save();
+if (Config::get('session.driver') !== '') {
+    Session::save();
 }
 
 /**
@@ -204,7 +189,7 @@ if (Config::get('session.driver') !== '')
  * to make testing the cookie functionality of the site
  * much easier since the jar can be inspected.
  */
-Cookie::send();	
+Cookie::send();
 
 /**
  * Send the final response to the browser and fire the

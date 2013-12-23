@@ -1,3 +1,5 @@
 <?php namespace Laravel\CLI\Tasks;
 
-abstract class Task {}
+abstract class Task
+{
+}

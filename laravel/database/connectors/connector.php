@@ -1,41 +1,44 @@
-<?php namespace Laravel\Database\Connectors; use PDO;
+<?php namespace Laravel\Database\Connectors;
 
-abstract class Connector {
+use PDO;
 
-	/**
-	 * The PDO connection options.
-	 *
-	 * @var array
-	 */
-	protected $options = array(
-			PDO::ATTR_CASE => PDO::CASE_LOWER,
-			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-			PDO::ATTR_ORACLE_NULLS => PDO::NULL_NATURAL,
-			PDO::ATTR_STRINGIFY_FETCHES => false,
-			PDO::ATTR_EMULATE_PREPARES => false,
-	);
+abstract class Connector
+{
 
-	/**
-	 * Establish a PDO database connection.
-	 *
-	 * @param  array  $config
-	 * @return PDO
-	 */
-	abstract public function connect($config);
+    /**
+     * The PDO connection options.
+     *
+     * @var array
+     */
+    protected $options = array(
+        PDO::ATTR_CASE => PDO::CASE_LOWER,
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_ORACLE_NULLS => PDO::NULL_NATURAL,
+        PDO::ATTR_STRINGIFY_FETCHES => false,
+        PDO::ATTR_EMULATE_PREPARES => false,
+    );
 
-	/**
-	 * Get the PDO connection options for the configuration.
-	 *
-	 * Developer specified options will override the default connection options.
-	 *
-	 * @param  array  $config
-	 * @return array
-	 */
-	protected function options($config)
-	{
-		$options = (isset($config['options'])) ? $config['options'] : array();
+    /**
+     * Establish a PDO database connection.
+     *
+     * @param  array $config
+     * @return PDO
+     */
+    abstract public function connect($config);
 
-		return $this->options + $options;
-	}
+    /**
+     * Get the PDO connection options for the configuration.
+     *
+     * Developer specified options will override the default connection options.
+     *
+     * @param  array $config
+     * @return array
+     */
+    protected function options($config)
+    {
+        $options = (isset($config['options'])) ? $config['options'] : array();
+
+        return $this->options + $options;
+    }
 
 }
